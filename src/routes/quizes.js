@@ -1,9 +1,7 @@
 const router = require('express').Router();
-
 const Quizes = require('../models/quizes');
 
-// get all enabled quizes
-async function getQuizes(req, res, next) {
+const getQuizes = async (req, res, next) => {
   try {
     const quizes = await Quizes.find({ isEnabled: true }).lean();
     const text = quizes
@@ -15,10 +13,9 @@ async function getQuizes(req, res, next) {
   } catch (err) {
     next(err);
   }
-}
+};
 
-// create a new quiz
-async function createQuiz(req, res, next) {
+const createQuiz = async (req, res, next) => {
   try {
     const quiz = await Quizes.create(req.body);
     console.log('Quiz Created: ', quiz);
@@ -26,29 +23,27 @@ async function createQuiz(req, res, next) {
   } catch (err) {
     next(err);
   }
-}
+};
 
-// delete all quizes
-async function deleteQuizes(req, res, next) {
+const deleteQuizes = async (req, res, next) => {
   try {
     const resp = await Quizes.remove({});
     res.status(200).json(resp);
   } catch (err) {
     next(err);
   }
-}
+};
 
-// handle unsupported methods
-function unsupportedMethods(req, res, next) {
+const unsupportedMethods = (req, res, next) => {
   res.status(403).send('Not supported');
-}
+};
 
 router
-    .route('/quizes')
-    .get(getQuizes)
-    .post(createQuiz)
-    .delete(deleteQuizes)
-    .all(unsupportedMethods);
+  .route('/quizes')
+  .get(getQuizes)
+  .post(createQuiz)
+  .delete(deleteQuizes)
+  .all(unsupportedMethods);
 
 
 
@@ -57,22 +52,7 @@ router
 
 
 
-
-
-
-
-
-
-
-
-
-router
-  .route('/Quizes/:quizId')
-  .get(getQuizById)
-  .put(updateQuizById)
-  .delete(deleteQuizById);
-
-function getQuizById(req, res, next) {
+const getQuizById = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
       const { name, instructions, duration, questions } = quiz;
@@ -86,14 +66,14 @@ function getQuizById(req, res, next) {
       res.status(200).send(html);
     })
     .catch((err) => next(err));
-}
+};
 
-function formatDuration(duration) {
+const formatDuration = (duration) => {
   const { hours, minutes, seconds } = duration;
   return `${hours}:${minutes}:${seconds}`;
-}
+};
 
-function formatQuizHtml(name, instructions, durationString, questions) {
+const formatQuizHtml = (name, instructions, durationString, questions) => {
   let html = `<p style="text-align:center"><b>${name}</b></p><b>Instructions:</b> ${instructions}<br><b>Duration:</b> ${durationString}<hr>`;
   let num = 1;
   for (const question of questions) {
@@ -113,41 +93,31 @@ function formatQuizHtml(name, instructions, durationString, questions) {
     num++;
   }
   return html;
-}
+};
 
-function updateQuizById(req, res, next) {
+const updateQuizById = (req, res, next) => {
   Quizes.findByIdAndUpdate(req.params.quizId, { $set: req.body }, { new: true })
     .then((quiz) => {
       res.status(200).json(quiz);
     })
     .catch((err) => next(err));
-}
+};
 
-function deleteQuizById(req, res, next) {
+const deleteQuizById = (req, res, next) => {
   Quizes.findByIdAndRemove(req.params.quizId)
     .then((quiz) => {
       res.status(200).json(quiz);
     })
     .catch((err) => next(err));
-}
+};
 
+router
+  .route('/Quizes/:quizId')
+  .get(getQuizById)
+  .put(updateQuizById)
+  .delete(deleteQuizById);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function getQuizQuestions(req, res, next) {
+const getQuizQuestions = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
       if (quiz) {
@@ -159,9 +129,9 @@ function getQuizQuestions(req, res, next) {
       }
     })
     .catch((err) => next(err));
-}
+};
 
-function addQuizQuestion(req, res, next) {
+const addQuizQuestion = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
       if (quiz) {
@@ -175,9 +145,9 @@ function addQuizQuestion(req, res, next) {
     .then((quiz) => Quizes.findById(quiz._id))
     .then((quiz) => res.status(200).json(quiz))
     .catch((err) => next(err));
-}
+};
 
-function deleteQuizQuestions(req, res, next) {
+const deleteQuizQuestions = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
       if (quiz) {
@@ -192,15 +162,15 @@ function deleteQuizQuestions(req, res, next) {
     })
     .then((quiz) => res.status(200).json(quiz.questions))
     .catch((err) => next(err));
-}
+};
 
-function notSupported(req, res) {
+const notSupported = (req, res) => {
   res
     .status(403)
     .send(
       `PUT operation not supported on /quizes/${req.params.quizId}/questions`,
     );
-}
+};
 
 router
   .route('/quizes/:quizId/questions')
@@ -209,17 +179,7 @@ router
   .put(notSupported)
   .delete(deleteQuizQuestions);
 
-
-
-
-
-
-
-
-
-
-
-function getQuizQuestion(req, res, next) {
+const getQuizQuestion = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
       if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
@@ -237,16 +197,16 @@ function getQuizQuestion(req, res, next) {
       }
     })
     .catch((err) => next(err));
-}
+};
 
-function postQuizQuestion(req, res, next) {
+const postQuizQuestion = (req, res, next) => {
   res.statusCode = 403;
   res.end(
     `POST operation not supported on /quizes/${req.params.quizId}/questions${req.params.questionId}`,
   );
-}
+};
 
-function putQuizQuestion(req, res, next) {
+const putQuizQuestion = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
       if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
@@ -284,9 +244,9 @@ function putQuizQuestion(req, res, next) {
       }
     })
     .catch((err) => next(err));
-}
+};
 
-function deleteQuizQuestion(req, res, next) {
+const deleteQuizQuestion = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
       if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
@@ -312,7 +272,7 @@ function deleteQuizQuestion(req, res, next) {
       }
     })
     .catch((err) => next(err));
-}
+};
 
 router
   .route('/quizes/:quizId/questions/:questionId')
