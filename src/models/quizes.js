@@ -34,6 +34,7 @@ const questionSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
 const quizSchema = new mongoose.Schema(
   {
     name: {
