@@ -37,6 +37,10 @@ const unsupportedMethods = (req, res, next) => {
   res.status(403).send('Not supported');
 };
 
+/*___________________________________________________*/
+/*___________________________________________________*/
+/*___________________________________________________*/
+
 const getQuizById = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
@@ -96,6 +100,10 @@ const deleteQuizById = (req, res, next) => {
     .catch((err) => next(err));
 };
 
+/*___________________________________________________*/
+/*___________________________________________________*/
+/*___________________________________________________*/
+
 const getQuizQuestions = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
@@ -150,6 +158,10 @@ const notSupported = (req, res) => {
       `PUT operation not supported on /quizes/${req.params.quizId}/questions`,
     );
 };
+
+/*___________________________________________________*/
+/*___________________________________________________*/
+/*___________________________________________________*/
 
 const getQuizQuestion = (req, res, next) => {
   Quizes.findById(req.params.quizId)
@@ -245,6 +257,10 @@ const deleteQuizQuestion = (req, res, next) => {
     })
     .catch((err) => next(err));
 };
+
+/*___________________________________________________*/
+/*___________________________________________________*/
+/*___________________________________________________*/
 
 module.exports = {
   getQuizes,
