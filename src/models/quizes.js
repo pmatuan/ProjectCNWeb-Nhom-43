@@ -73,6 +73,7 @@ const quizSchema = new mongoose.Schema(
     },
   },
   {
+    collection: 'quizes',
     timestamps: true,
   },
 );
