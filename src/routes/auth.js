@@ -3,10 +3,7 @@ const asyncMiddleware = require('../middlewares/async');
 const { auth } = require('../middlewares/auth');
 const { loginValidate, registerValidate } = require('../validations/auth');
 const authController = require('../controllers/auth');
-const User = require('../models/user');
-const Quizes = require('../models/quizes');
 
-/* eslint-disable prettier/prettier */
 router.post(
   '/auths/register',
   registerValidate,
@@ -22,6 +19,5 @@ router.get(
   auth,
   asyncMiddleware(authController.verifyAccessToken),
 );
-/* eslint-enable prettier/prettier */
 
 module.exports = router;
