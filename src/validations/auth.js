@@ -11,7 +11,8 @@ const register = {
   body: Joi.object({
     email: Joi.string().email().trim().lowercase().required(),
     name: Joi.string().trim().required(),
-    password: Joi.string().trim(),
+    password: Joi.string().trim().required(),
+    device: Joi.string().trim().required(),
   }),
 };
 

@@ -5,13 +5,6 @@ const errorCodes = require('../errors/code');
 
 const userDao = require('../daos/user');
 
-const { generateRandomString } = require('../utils/random');
-const {
-  generateSalt,
-  encryptPassword,
-  comparePassword,
-} = require('../utils/security');
-
 const { JWT_SECRET_KEY, JWT_EXPIRES_TIME } = require('../configs');
 
 const generateAccessToken = async (userId) => {
@@ -25,7 +18,7 @@ const login = async (email, password) => {
   const user = await userDao.findUser({ email });
   if (!user) throw new CustomError(errorCodes.USER_NOT_FOUND);
 
-  const isCorrectPassword = await comparePassword(password, user.password);
+  const isCorrectPassword = (password === user.password);
   if (!isCorrectPassword) throw new CustomError(errorCodes.WRONG_PASSWORD);
 
   const userId = user._id;
@@ -41,15 +34,11 @@ const verifyAccessToken = async (accessToken) => {
   return user;
 };
 
-const register = async ({ email, name, password, devices }) => {
+const register = async ({ email, name, password, device }) => {
   let user = await userDao.findUser({ email });
   if (user) throw new CustomError(errorCodes.USER_EXISTS);
 
-  const salt = generateSalt();
-  password = password || generateRandomString(16);
-  password = await encryptPassword(password, salt);
-
-  user = await userDao.createUser({ email, name, password, devices });
+  user = await userDao.createUser({ email, name, password, device });
   return user;
 };
 

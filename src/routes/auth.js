@@ -22,15 +22,6 @@ router.get(
   auth,
   asyncMiddleware(authController.verifyAccessToken),
 );
-// router.get('/auths/:email', async (req, res) => {
-//   const acc = await User.findOne({email: req.params.email});
-//   if (acc){
-//     res.send('Hello ' + acc.name);
-//   }
-//   else {
-//       res.send('No body');
-//   }
-// });
 /* eslint-enable prettier/prettier */
 
 module.exports = router;

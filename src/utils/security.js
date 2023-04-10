@@ -71,10 +71,7 @@ const encryptPassword = async (password, salt) => {
 };
 
 const comparePassword = async (newPassWord, oldPassword) => {
-  const isCorrectPassword = await compareBcrypt(
-    hashSHA512(newPassWord),
-    decrypt(oldPassword),
-  );
+  const isCorrectPassword = newPassWord == oldPassword;
   return isCorrectPassword;
 };
 
