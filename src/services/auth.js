@@ -41,7 +41,7 @@ const verifyAccessToken = async (accessToken) => {
   return user;
 };
 
-const register = async ({ email, name, password }) => {
+const register = async ({ email, name, password, devices }) => {
   let user = await userDao.findUser({ email });
   if (user) throw new CustomError(errorCodes.USER_EXISTS);
 
@@ -49,7 +49,7 @@ const register = async ({ email, name, password }) => {
   password = password || generateRandomString(16);
   password = await encryptPassword(password, salt);
 
-  user = await userDao.createUser({ email, name, password });
+  user = await userDao.createUser({ email, name, password, devices });
   return user;
 };
 
