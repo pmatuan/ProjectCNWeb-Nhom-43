@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Phan Minh Anh Tuan",
+        "email": "tuan.pma205227@sis.hust.edu.vn",
+        "password": "123456789",
+        "device": "Xiaomi Mi 9 Lite"
+    },
+    {
+        "name": "Nguyen Vu Dinh Tuan",
+        "email": "tuan.nvd204802@sis.hust.edu.vn",
+        "password": "12345678910",
+        "device": "Oppo R5"
+    },
+    {
+        "name": "Tran Anh Tuan",
+        "email": "tuan.ta204860@sis.hust.edu.vn",
+        "password": "1256789",
+        "device": "Samsung Galaxy S21"
+    },
+    {
+        "name": "Vi Anh Tuan",
+        "email": "tuan.va204617@sis.hust.edu.vn",
+        "password": "123123123",
+        "device": "Iphone 14 Pro"
+    }
+]

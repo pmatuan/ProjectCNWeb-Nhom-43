@@ -4,6 +4,7 @@ const getErrorMessage = require('../errors/message');
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
+  console.log(err.stack)
   let statusCode = err.code || err.statusCode;
   let { message } = err;
   let details;
