@@ -1,0 +1,61 @@
+[{
+  "_id": {
+    "$oid": "6444a74cb24f400986667661"
+  },
+  "email": "tuan.pma205227@sis.hust.edu.vn",
+  "name": "Phan Minh Anh Tuẫn",
+  "password": "3464a18996eb422d9a7ceeb95a88148c:1c2d6d54f897a4371c66e56083905f35fa0b26da43aab2f7a957668b47a213ee5f384cf134c401649f2914ea1628f7850c9197b674a612d00e3244fb",
+  "device": "Xiaomi Mi 9 Lite",
+  "createdAt": {
+    "$date": "2023-04-23T03:34:36.032Z"
+  },
+  "updatedAt": {
+    "$date": "2023-04-23T03:34:36.032Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6444a774b24f400986667664"
+  },
+  "email": "tuan.nvd204802@sis.hust.edu.vn",
+  "name": "Nguyễn Vũ Đình Tuẫn",
+  "password": "f502744848c7c30d95ebcb3dcaee47bd:573ea08bf51988e843f6605a80e57b26419711d31d8d5fb6c131e20152b0f777c7469c8eb17d5d703fe15513a266188845ebffc3182e6a3f99eacbe6",
+  "device": "Oppo R5",
+  "createdAt": {
+    "$date": "2023-04-23T03:35:16.581Z"
+  },
+  "updatedAt": {
+    "$date": "2023-04-23T03:35:16.581Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6444a790b24f400986667667"
+  },
+  "email": "tuan.ta204860@sis.hust.edu.vn",
+  "name": "Trần Anh Tuấn",
+  "password": "b39d2693e4374ce717eb1157a28d5815:0928f07231ca915c6a14e0926f4ec36f2133af134e4614d964078f96d19ff27ceb2a3d8f9ed9b5518db8ca8d99cbfd0e9c03f4196c66f642860d3d92",
+  "device": "Samsung Galaxy S21",
+  "createdAt": {
+    "$date": "2023-04-23T03:35:44.728Z"
+  },
+  "updatedAt": {
+    "$date": "2023-04-23T03:35:44.728Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6444a7a8b24f40098666766a"
+  },
+  "email": "tuan.va204617@sis.hust.edu.vn",
+  "name": "Vi Anh Tuấn",
+  "password": "72a1fc92862494b1ec32cfd1d1440006:f89a1bfb23284575c8a317693c7efd67af3920618e2d8a93b6ac9caaafb08fb9355f407cd288c4798b689dd2fc876646145837fd789ef444ff094789",
+  "device": "Iphone 14 Pro",
+  "createdAt": {
+    "$date": "2023-04-23T03:36:08.880Z"
+  },
+  "updatedAt": {
+    "$date": "2023-04-23T03:36:08.880Z"
+  },
+  "__v": 0
+}]

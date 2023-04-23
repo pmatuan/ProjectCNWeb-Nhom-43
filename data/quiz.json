@@ -1,189 +1,38 @@
 [
   {
-    "name": "Math Quiz",
-    "instructions": "This quiz tests your knowledge of basic math.",
-    "isEnabled": true,
-    "questions": [
-      {
-        "question": "What is 2 + 2?",
-        "answers": [
-          {
-            "option": "3"
-          },
-          {
-            "option": "4"
-          },
-          {
-            "option": "5"
-          }
-        ],
-        "answer": 1,
-        "isEnabled": true,
-        "explanation": "2 + 2 = 4"
-      },
-      {
-        "question": "What is 10 / 2?",
-        "answers": [
-          {
-            "option": "2"
-          },
-          {
-            "option": "5"
-          },
-          {
-            "option": "8"
-          }
-        ],
-        "answer": 1,
-        "isEnabled": true,
-        "explanation": "10 divided by 2 is 5"
-      }
+    "question": "What is the capital of France?",
+    "answers": [
+      { "option": "Paris" },
+      { "option": "Berlin" },
+      { "option": "Rome" },
+      { "option": "Madrid" }
     ],
-    "duration": {
-      "hours": 0,
-      "minutes": 30,
-      "seconds": 0
-    }
+    "answer": 0,
+    "isEnabled": true,
+    "explanation": "Paris is the capital of France"
   },
   {
-    "name": "Geography Quiz",
-    "instructions": "This quiz tests your knowledge of world geography.",
-    "isEnabled": true,
-    "questions": [
-      {
-        "question": "What is the capital city of Japan?",
-        "answers": [
-          {
-            "option": "Beijing"
-          },
-          {
-            "option": "Tokyo"
-          },
-          {
-            "option": "Seoul"
-          }
-        ],
-        "answer": 1,
-        "isEnabled": true,
-        "explanation": "The capital city of Japan is Tokyo."
-      },
-      {
-        "question": "What is the longest river in the world?",
-        "answers": [
-          {
-            "option": "Amazon"
-          },
-          {
-            "option": "Nile"
-          },
-          {
-            "option": "Mississippi"
-          }
-        ],
-        "answer": 1,
-        "isEnabled": true,
-        "explanation": "The longest river in the world is the Amazon River."
-      }
+    "question": "What is the largest planet in our solar system?",
+    "answers": [
+      { "option": "Jupiter" },
+      { "option": "Earth" },
+      { "option": "Saturn" },
+      { "option": "Venus" }
     ],
-    "duration": {
-      "hours": 0,
-      "minutes": 20,
-      "seconds": 0
-    }
+    "answer": 0,
+    "isEnabled": true,
+    "explanation": "Jupiter is the largest planet in our solar system"
   },
   {
-    "name": "Science Quiz",
-    "instructions": "This quiz tests your knowledge of basic science concepts.",
-    "isEnabled": true,
-    "questions": [
-      {
-        "question": "What is the chemical symbol for gold?",
-        "answers": [
-          {
-            "option": "Au"
-          },
-          {
-            "option": "Ag"
-          },
-          {
-            "option": "Cu"
-          }
-        ],
-        "answer": 0,
-        "isEnabled": true,
-        "explanation": "The chemical symbol for gold is Au."
-      },
-      {
-        "question": "What is the freezing point of water?",
-        "answers": [
-          {
-            "option": "0 degrees Celsius"
-          },
-          {
-            "option": "32 degrees Celsius"
-          },
-          {
-            "option": "-273 degrees Celsius"
-          }
-        ],
-        "answer": 1,
-        "isEnabled": true,
-        "explanation": "The freezing point of water is 32 degrees Fahrenheit or 0 degrees Celsius."
-      }
+    "question": "What is the capital of Australia?",
+    "answers": [
+      { "option": "Canberra" },
+      { "option": "Sydney" },
+      { "option": "Melbourne" },
+      { "option": "Brisbane" }
     ],
-    "duration": {
-      "hours": 0,
-      "minutes": 15,
-      "seconds": 0
-    }
-  },
-  {
-    "name": "History Quiz",
-    "instructions": "This quiz tests your knowledge of historical events and figures.",
+    "answer": 0,
     "isEnabled": true,
-    "questions": [
-      {
-        "question": "Who was the first president of the United States?",
-        "answers": [
-          {
-            "option": "George Washington"
-          },
-          {
-            "option": "Thomas Jefferson"
-          },
-          {
-            "option": "Abraham Lincoln"
-          },
-          {
-            "option": "Phan Minh Anh Tuan"
-          }
-        ],
-        "answer": 3,
-        "isEnabled": true,
-        "explanation": "The first president of the United States was Phan Minh Anh Tuan."
-      },
-      {
-        "question": "What year did World War II end?",
-        "answers": [
-          {
-            "option": "1945"
-          },
-          {
-            "option": "1914"
-          },
-          {
-            "option": "1939"
-          }
-        ],
-        "answer": 0,
-        "isEnabled": true,
-        "explanation": "World War II ended in 1945."
-      }
-    ],
-    "duration": {
-      "hours": 0,
-      "minutes": 25,
-      "seconds": 0
-    }
+    "explanation": "Canberra is the capital of Australia"
   }
 ]

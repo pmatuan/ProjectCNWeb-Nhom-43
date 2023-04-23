@@ -31,6 +31,7 @@ const questionSchema = new mongoose.Schema(
     },
   },
   {
+    collection: 'question',
     timestamps: true,
   },
 );
@@ -43,11 +44,6 @@ const quizSchema = new mongoose.Schema(
       unique: true,
     },
 
-    instructions: {
-      type: String,
-      required: true,
-    },
-
     isEnabled: {
       type: Boolean,
       default: true,
@@ -55,22 +51,6 @@ const quizSchema = new mongoose.Schema(
 
     questions: [questionSchema],
 
-    duration: {
-      hours: {
-        type: Number,
-        default: 0,
-      },
-
-      minutes: {
-        type: Number,
-        default: 0,
-      },
-
-      seconds: {
-        type: Number,
-        default: 0,
-      },
-    },
   },
   {
     collection: 'quizes',
@@ -78,6 +58,7 @@ const quizSchema = new mongoose.Schema(
   },
 );
 
-var Quizes = mongoose.model('Quiz', quizSchema);
-
-module.exports = Quizes;
+module.exports = {
+  Quizes: mongoose.model('Quiz', quizSchema),
+  Questions: mongoose.model('Question', questionSchema)
+};
