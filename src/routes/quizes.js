@@ -2,8 +2,6 @@ const router = require('express').Router();
 const {
   getQuizes,
   createQuiz,
-  deleteQuizes,
-  unsupportedMethods,
   getQuizById,
   updateQuizById,
   deleteQuizById,
@@ -21,8 +19,6 @@ router
   .route('/quizes')
   .get(getQuizes)
   .post(createQuiz)
-  .delete(deleteQuizes)
-  .all(unsupportedMethods);
 
 router
   .route('/quizes/:quizId')

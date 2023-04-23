@@ -35,19 +35,6 @@ const createQuiz = async (req, res, next) => {
   }
 };
 
-const deleteQuizes = async (req, res, next) => {
-  try {
-    const resp = await Quizes.remove({});
-    res.status(200).json(resp);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const unsupportedMethods = (req, res, next) => {
-  res.status(403).send('Not supported');
-};
-
 /*___________________________________________________*/
 /*___________________________________________________*/
 /*___________________________________________________*/
@@ -262,8 +249,6 @@ const deleteQuizQuestion = (req, res, next) => {
 module.exports = {
   getQuizes,
   createQuiz,
-  deleteQuizes,
-  unsupportedMethods,
   getQuizById,
   updateQuizById,
   deleteQuizById,
