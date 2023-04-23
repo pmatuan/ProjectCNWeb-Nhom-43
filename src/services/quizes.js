@@ -1,6 +1,6 @@
 const { Quizes, Questions } = require('../models/quizes');
 
-const getQuizes = async (req, res, next) => {
+const getQuizes = async (req, res) => {
   try {
     const quizes = await Quizes.find({ isEnabled: true }).lean();
     const text = quizes
@@ -10,11 +10,11 @@ const getQuizes = async (req, res, next) => {
       .join('');
     res.status(200).send(text);
   } catch (err) {
-    next(err);
+    console.log(err);
   }
 };
 
-const createQuiz = async (req, res, next) => {
+const createQuiz = async (req, res) => {
   try {
     const { name, questionIds } = req.body;
 
@@ -30,8 +30,8 @@ const createQuiz = async (req, res, next) => {
     await quiz.save();
 
     res.status(201).json({ message: 'Quiz created successfully!', quiz: quiz });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -39,17 +39,18 @@ const createQuiz = async (req, res, next) => {
 /*___________________________________________________*/
 /*___________________________________________________*/
 
-const getQuizById = (req, res, next) => {
-  Quizes.findById(req.params.quizId)
-    .then((quiz) => {
-      const { name, questions } = quiz;
-      const html = formatQuizHtml(
-        name,
-        questions,
-      );
-      res.status(200).send(html);
-    })
-    .catch((err) => next(err));
+const getQuizById = async (req, res) => {
+  try {
+    const quiz = await Quizes.findById(req.params.quizId);
+    if (!quiz) {
+      return res.status(404).json({ message: 'Quiz not found' });
+    }
+    const { name, questions } = quiz;
+    const html = formatQuizHtml(name, questions);
+    res.status(200).send(html);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const formatQuizHtml = (name, questions) => {
@@ -68,178 +69,177 @@ const formatQuizHtml = (name, questions) => {
   return html;
 };
 
-const updateQuizById = (req, res, next) => {
-  Quizes.findByIdAndUpdate(req.params.quizId, { $set: req.body }, { new: true })
-    .then((quiz) => {
-      res.status(200).json(quiz);
-    })
-    .catch((err) => next(err));
+const updateQuizById = async (req, res) => {
+  try {
+    const quiz = await Quizes.findById(req.params.quizId);
+
+    if (!quiz) {
+      return res.status(404).json({ message: 'Quiz not found' });
+    }
+
+    quiz.name = req.body.name;
+    quiz.questions = await Questions.find({
+      _id: { $in: req.body.questionIds },
+    }).populate('answers');
+
+    await quiz.save();
+
+    res.status(200).json(quiz);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const deleteQuizById = (req, res, next) => {
-  Quizes.findByIdAndRemove(req.params.quizId)
-    .then((quiz) => {
-      res.status(200).json(quiz);
-    })
-    .catch((err) => next(err));
-};
-
-/*___________________________________________________*/
-/*___________________________________________________*/
-/*___________________________________________________*/
-
-const getQuizQuestions = (req, res, next) => {
-  Quizes.findById(req.params.quizId)
-    .then((quiz) => {
-      if (quiz) {
-        res.status(200).json(quiz.questions);
-      } else {
-        const err = new Error(`Quiz ${req.params.quizId} not found`);
-        err.status = 404;
-        return next(err);
-      }
-    })
-    .catch((err) => next(err));
-};
-
-const addQuizQuestion = (req, res, next) => {
-  Quizes.findById(req.params.quizId)
-    .then((quiz) => {
-      if (quiz) {
-        quiz.questions.push(req.body);
-        return quiz.save();
-      }
-      const err = new Error(`Quiz ${req.params.quizId} not found`);
-      err.status = 404;
-      throw err;
-    })
-    .then((quiz) => Quizes.findById(quiz._id))
-    .then((quiz) => res.status(200).json(quiz))
-    .catch((err) => next(err));
-};
-
-const deleteQuizQuestions = (req, res, next) => {
-  Quizes.findById(req.params.quizId)
-    .then((quiz) => {
-      if (quiz) {
-        for (let i = quiz.questions.length - 1; i >= 0; i--) {
-          quiz.questions.id(quiz.questions[i]._id).remove();
-        }
-        return quiz.save();
-      }
-      const err = new Error(`Quiz ${req.params.quizId} not found`);
-      err.status = 404;
-      throw err;
-    })
-    .then((quiz) => res.status(200).json(quiz.questions))
-    .catch((err) => next(err));
-};
-
-const notSupported = (req, res) => {
-  res
-    .status(403)
-    .send(
-      `PUT operation not supported on /quizes/${req.params.quizId}/questions`,
-    );
+const deleteQuizById = async (req, res) => {
+  try {
+    const quiz = await Quizes.findByIdAndRemove(req.params.quizId);
+    if (!quiz) {
+      return res.status(404).json({ message: 'Quiz not found' });
+    }
+    res.status(200).json(quiz);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 /*___________________________________________________*/
 /*___________________________________________________*/
 /*___________________________________________________*/
 
-const getQuizQuestion = (req, res, next) => {
-  Quizes.findById(req.params.quizId)
-    .then((quiz) => {
-      if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(quiz.questions.id(req.params.questionId));
-      } else if (quiz == null) {
-        const err = new Error(`Quiz ${req.params.quizId} not found`);
-        err.statusCode = 404;
-        return next(err);
-      } else {
-        const err = new Error(`Question ${req.params.questionId} not found`);
-        err.statusCode = 404;
-        return next(err);
-      }
-    })
-    .catch((err) => next(err));
+const getQuizQuestions = async (req, res) => {
+  try {
+    const quiz = await Quizes.findById(req.params.quizId);
+    if (!quiz) {
+      return res
+        .status(404)
+        .json({ message: `Quiz ${req.params.quizId} not found` });
+    }
+    res.status(200).json(quiz.questions);
+  } catch (err) {
+    return console.log(err);
+  }
 };
 
-const postQuizQuestion = (req, res, next) => {
-  res.statusCode = 403;
-  res.end(
-    `POST operation not supported on /quizes/${req.params.quizId}/questions${req.params.questionId}`,
-  );
+const addQuizQuestion = async (req, res) => {
+  try {
+    const quiz = await Quizes.findById(req.params.quizId);
+    if (!quiz) {
+      return res
+        .status(404)
+        .json({ message: `Quiz ${req.params.quizId} not found` });
+    }
+    quiz.questions.push(req.body);
+    const savedQuiz = await quiz.save();
+    const updatedQuiz = await Quizes.findById(savedQuiz._id);
+    res.status(200).json(updatedQuiz);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const putQuizQuestion = (req, res, next) => {
-  Quizes.findById(req.params.quizId)
-    .then((quiz) => {
-      if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
-        if (req.body.question) {
-          quiz.questions.id(req.params.questionId).question = req.body.question;
-        }
-        if (req.body.answers) {
-          quiz.questions.id(req.params.questionId).answers = req.body.answers;
-        }
-        if (req.body.answer) {
-          quiz.questions.id(req.params.questionId).answer = req.body.answer;
-        }
-        if (req.body.isEnabled != null) {
-          quiz.questions.id(req.params.questionId).isEnabled =
-            req.body.isEnabled;
-        }
-        quiz.save().then(
-          (quiz) => {
-            Quizes.findById(quiz._id).then((quiz) => {
-              res.statusCode = 200;
-              res.setHeader('Content-Type', 'application/json');
-              res.json(quiz.questions.id(req.params.questionId));
-            });
-          },
-          (err) => next(err),
-        );
-      } else if (quiz == null) {
-        const err = new Error(`Quiz ${req.params.quizId} not found`);
-        err.statusCode = 404;
-        return next(err);
-      } else {
-        const err = new Error(`Question ${req.params.questionId} not found`);
-        err.statusCode = 404;
-        return next(err);
-      }
-    })
-    .catch((err) => next(err));
+const deleteQuizQuestions = async (req, res) => {
+  try {
+    const quiz = await Quizes.findById(req.params.quizId);
+    if (!quiz) {
+      return res
+        .status(404)
+        .json({ message: `Quiz ${req.params.quizId} not found` });
+    }
+    for (let i = quiz.questions.length - 1; i >= 0; i--) {
+      quiz.questions.id(quiz.questions[i]._id).remove();
+    }
+    const savedQuiz = await quiz.save();
+    res.status(200).json(savedQuiz.questions);
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-const deleteQuizQuestion = (req, res, next) => {
-  Quizes.findById(req.params.quizId)
-    .then((quiz) => {
-      if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
-        quiz.questions.id(req.params.questionId).remove();
-        quiz.save().then(
-          (quiz) => {
-            Quizes.findById(quiz._id).then((quiz) => {
-              res.statusCode = 200;
-              res.setHeader('Content-Type', 'application/json');
-              res.json(quiz);
-            });
-          },
-          (err) => next(err),
-        );
-      } else if (quiz == null) {
-        const err = new Error(`Quiz ${req.params.quizId} not found`);
-        err.statusCode = 404;
-        return next(err);
-      } else {
-        const err = new Error(`Question ${req.params.questionId} not found`);
-        err.statusCode = 404;
-        return next(err);
+/*___________________________________________________*/
+/*___________________________________________________*/
+/*___________________________________________________*/
+
+const getQuizQuestion = async (req, res) => {
+  try {
+    const quiz = await Quizes.findById(req.params.quizId);
+    if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(quiz.questions.id(req.params.questionId));
+    } else if (quiz == null) {
+      return res
+        .status(404)
+        .json({ message: `Quiz ${req.params.quizId} not found` });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Question ${req.params.questionId} not found` });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const putQuizQuestion = async (req, res) => {
+  try {
+    const quiz = await Quizes.findById(req.params.quizId);
+    if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
+      if (req.body.question) {
+        quiz.questions.id(req.params.questionId).question = req.body.question;
       }
-    })
-    .catch((err) => next(err));
+      if (req.body.explanation) {
+        quiz.questions.id(req.params.questionId).explanation = req.body.explanation;
+      }
+      if (req.body.answers) {
+        quiz.questions.id(req.params.questionId).answers = req.body.answers;
+      }
+      if (req.body.answer) {
+        quiz.questions.id(req.params.questionId).answer = req.body.answer;
+      }
+      if (req.body.isEnabled != null) {
+        quiz.questions.id(req.params.questionId).isEnabled = req.body.isEnabled;
+      }
+      await quiz.save();
+      const updatedQuiz = await Quizes.findById(quiz._id);
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(updatedQuiz.questions.id(req.params.questionId));
+    } else if (quiz == null) {
+      return res
+        .status(404)
+        .json({ message: `Quiz ${req.params.quizId} not found` });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Question ${req.params.questionId} not found` });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deleteQuizQuestion = async (req, res) => {
+  try {
+    const quiz = await Quizes.findById(req.params.quizId);
+    if (quiz != null && quiz.questions.id(req.params.questionId) != null) {
+      quiz.questions.id(req.params.questionId).remove();
+      await quiz.save();
+      const updatedQuiz = await Quizes.findById(quiz._id);
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(updatedQuiz);
+    } else if (quiz == null) {
+      return res
+        .status(404)
+        .json({ message: `Quiz ${req.params.quizId} not found` });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Question ${req.params.questionId} not found` });
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 /*___________________________________________________*/
@@ -255,9 +255,7 @@ module.exports = {
   getQuizQuestions,
   addQuizQuestion,
   deleteQuizQuestions,
-  notSupported,
   getQuizQuestion,
-  postQuizQuestion,
   putQuizQuestion,
   deleteQuizQuestion,
 };

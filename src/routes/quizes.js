@@ -8,9 +8,7 @@ const {
   getQuizQuestions,
   addQuizQuestion,
   deleteQuizQuestions,
-  notSupported,
   getQuizQuestion,
-  postQuizQuestion,
   putQuizQuestion,
   deleteQuizQuestion,
 } = require('../services/quizes');
@@ -30,13 +28,11 @@ router
   .route('/quizes/:quizId/questions')
   .get(getQuizQuestions)
   .post(addQuizQuestion)
-  .put(notSupported)
   .delete(deleteQuizQuestions);
 
 router
   .route('/quizes/:quizId/questions/:questionId')
   .get(getQuizQuestion)
-  .post(postQuizQuestion)
   .put(putQuizQuestion)
   .delete(deleteQuizQuestion);
 
