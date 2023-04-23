@@ -1,4 +1,4 @@
-const Quizes = require('../models/quizes');
+const { Quizes, Questions } = require('../models/quizes');
 
 const getQuizes = async (req, res, next) => {
   try {
@@ -16,11 +16,22 @@ const getQuizes = async (req, res, next) => {
 
 const createQuiz = async (req, res, next) => {
   try {
-    const quiz = await Quizes.create(req.body);
-    console.log('Quiz Created: ', quiz);
-    res.status(200).json(quiz);
-  } catch (err) {
-    next(err);
+    const { name, questionIds } = req.body;
+
+    const questions = await Questions.find({
+      _id: { $in: questionIds },
+    }).populate('answers');
+
+    const quiz = new Quizes({
+      name: name,
+      questions: questions,
+    });
+
+    await quiz.save();
+
+    res.status(201).json({ message: 'Quiz created successfully!', quiz: quiz });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -44,12 +55,9 @@ const unsupportedMethods = (req, res, next) => {
 const getQuizById = (req, res, next) => {
   Quizes.findById(req.params.quizId)
     .then((quiz) => {
-      const { name, instructions, duration, questions } = quiz;
-      const durationString = formatDuration(duration);
+      const { name, questions } = quiz;
       const html = formatQuizHtml(
         name,
-        instructions,
-        durationString,
         questions,
       );
       res.status(200).send(html);
@@ -57,24 +65,13 @@ const getQuizById = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const formatDuration = (duration) => {
-  const { hours, minutes, seconds } = duration;
-  return `${hours}:${minutes}:${seconds}`;
-};
-
-const formatQuizHtml = (name, instructions, durationString, questions) => {
-  let html = `<p style="text-align:center"><b>${name}</b></p><b>Instructions:</b> ${instructions}<br><b>Duration:</b> ${durationString}<hr>`;
+const formatQuizHtml = (name, questions) => {
+  let html = `<p style="text-align:center"><b>${name}</b></p>`;
   let num = 1;
   for (const question of questions) {
     if (!question.isEnabled) continue;
-    const {
-      question: questionText,
-      _id,
-      answers,
-      answer,
-      explanation,
-    } = question;
-    html += `${num}. ${questionText} - ${_id}<br><div style="margin:10px">`;
+    const { question: questionText, answers, answer, explanation } = question;
+    html += `${num}. ${questionText}<br><div style="margin:10px">`;
     for (const answer of answers) {
       html += `${answer.option}<br>`;
     }
