@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const CustomError = require('../errors/CustomError');
 const errorCodes = require('../errors/code');
 
-const userDao = require('../daos/user');
+const userDao = require('../daos/users');
 
 const { generateRandomString } = require('../utils/random');
 const {
