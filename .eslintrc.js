@@ -21,6 +21,10 @@ module.exports = {
     'no-use-before-define': 0,
     'no-restricted-syntax': 0,
     'global-require': 0,
+    'func-names': 'off',
+    'object-shorthand': 'off',
+    'consistent-return': 'off',
+    'no-return-await': 'off',
   },
   globals: {},
 };
