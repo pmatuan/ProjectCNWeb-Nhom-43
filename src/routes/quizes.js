@@ -16,7 +16,7 @@ const {
 router
   .route('/quizes')
   .get(getQuizes)
-  .post(createQuiz)
+  .post(createQuiz);
 
 router
   .route('/quizes/:quizId')
