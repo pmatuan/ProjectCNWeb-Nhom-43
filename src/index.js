@@ -5,15 +5,23 @@ const cors = require('cors');
 const helmet = require('helmet');
 const httpLogger = require('http-logger');
 
+const AppError = require('./utils/appError');
+const errorHandler = require('./controllers/errors');
+
 const camelCaseReq = require('./middlewares/camelCaseReq');
 const omitReq = require('./middlewares/omitReq');
 const snakeCaseRes = require('./middlewares/snakeCaseRes');
-const errorHandler = require('./middlewares/errorHandler');
 
 require('dotenv').config();
 require('./models');
 
 const { PORT } = require('./configs');
+
+process.on('uncaughtException', (err) => {
+  console.log('Uncaught Exception. Shutting down...');
+  console.log(err);
+  process.exit(1);
+});
 
 const app = express();
 
@@ -30,8 +38,22 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 require('./routes')(app);
 
+app.all('*', (req, res, next) => {
+  next(
+    new AppError(
+      404,
+      `${req.url} is not founded on this server or ${req.method} is not supported at ${req.url}`,
+    ),
+  );
+});
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.log('Unhandled Rejection. Shutting down...');
+  console.log(err);
+  server.close(() => process.exit(1));
 });
