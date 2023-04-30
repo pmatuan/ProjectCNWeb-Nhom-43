@@ -129,7 +129,7 @@ const addQuizQuestion = async (req, res) => {
         .json({ message: `Quiz ${req.params.quizId} not found` });
     }
     const newQuestion = new Questions(req.body);
-    await newQuestion.save();
+    // await newQuestion.save(); Trong TH muốn lưu question mới vào DB
     quiz.questions.push(newQuestion);
     const savedQuiz = await quiz.save();
     const updatedQuiz = await Quizes.findById(savedQuiz._id);
