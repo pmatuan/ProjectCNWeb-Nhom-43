@@ -114,7 +114,7 @@ const getQuizQuestions = async (req, res) => {
         .status(404)
         .json({ message: `Quiz ${req.params.quizId} not found` });
     }
-    res.status(200).json(quiz.questions);
+    res.status(200).json(...quiz.questions);
   } catch (err) {
     return console.log(err);
   }
