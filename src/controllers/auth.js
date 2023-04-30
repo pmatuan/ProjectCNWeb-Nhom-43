@@ -28,6 +28,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     secure: true, // only send through https
     httpOnly: true, // prevent cross site scripting, only return cookie with http request, not with JS script (document.cookies)
   });
+  
   res.status(201).json({
     status: 'success',
     token,
