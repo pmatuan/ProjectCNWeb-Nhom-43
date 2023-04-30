@@ -133,7 +133,7 @@ const addQuizQuestion = async (req, res) => {
     quiz.questions.push(newQuestion);
     const savedQuiz = await quiz.save();
     const updatedQuiz = await Quizes.findById(savedQuiz._id);
-    res.status(200).json(updatedQuiz);
+    res.status(200).json(JSON.parse(JSON.stringify(updatedQuiz)));
   } catch (err) {
     console.log(err);
   }

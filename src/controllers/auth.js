@@ -12,6 +12,29 @@ const signToken = (id) => {
   });
 };
 
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+  res.cookie('jwt', token, cookieOptions);
+
+  // Remove password from output
+  user.password = undefined;
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
@@ -20,19 +43,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     device: req.body.device,
   });
-  const token = signToken(newUser._id);
-  res.cookie('jwt', token, {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
-    ),
-    secure: true, // only send through https
-    httpOnly: true, // prevent cross site scripting, only return cookie with http request, not with JS script (document.cookies)
-  });
-  
-  res.status(201).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -47,11 +58,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError(401, 'Incorrect email or password'));
   }
   // Send token to client
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(user, 200, res);
 });
 
 // Use on all routes that require authentication
@@ -72,7 +79,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   // Verification token with jwt.verify()
   const decodedPayload = await promisify(jwt.verify)(
     token,
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET_KEY,
   );
   // Check if user still exists
   const user = await User.findById(decodedPayload.id);
@@ -166,11 +173,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // update changePasswordAt
 
   // log the user in, send JWT
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(user, 200, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -184,9 +187,5 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
   // log user in again
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  createSendToken(user, 200, res);
 });
