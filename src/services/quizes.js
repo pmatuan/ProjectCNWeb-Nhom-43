@@ -145,9 +145,7 @@ const deleteQuizQuestions = async (req, res) => {
         .status(404)
         .json({ message: `Quiz ${req.params.quizId} not found` });
     }
-    for (let i = quiz.questions.length - 1; i >= 0; i--) {
-      quiz.questions.id(quiz.questions[i]._id).remove();
-    }
+    quiz.questions.splice(0, quiz.questions.length);
     const savedQuiz = await quiz.save();
     res.status(200).json(savedQuiz.questions);
   } catch (err) {
@@ -188,7 +186,8 @@ const putQuizQuestion = async (req, res) => {
         quiz.questions.id(req.params.questionId).question = req.body.question;
       }
       if (req.body.explanation) {
-        quiz.questions.id(req.params.questionId).explanation = req.body.explanation;
+        quiz.questions.id(req.params.questionId).explanation =
+          req.body.explanation;
       }
       if (req.body.answers) {
         quiz.questions.id(req.params.questionId).answers = req.body.answers;
