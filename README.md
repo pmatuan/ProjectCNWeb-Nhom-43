@@ -2,15 +2,27 @@
 
 ## **Các API liên quan đến đăng nhập, đăng ký**
 
-### Đăng ký
+### Đăng ký, sử dụng phương thức POST
 ```url
-localhost:PORT/api/v1/auths/register
+localhost:PORT/api/v1/signup
 ```
 Ví dụ:
 
-### Đăng nhập
+### Đăng nhập, sử dụng phương thức POST
 ```url
-localhost:PORT/api/v1/auths/login
+localhost:PORT/api/v1/login
+```
+Ví dụ:
+
+### Quên mật khẩu, sử dụng phương thức POST
+```url
+localhost:PORT/api/v1/forgotPassword
+```
+Ví dụ:
+
+### Đặt lại mật khẩu, sử dụng phương thức PATCH
+```url
+localhost:PORT/api/v1/resetPassword/:token
 ```
 Ví dụ:
 
