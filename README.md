@@ -7,24 +7,36 @@
 localhost:PORT/api/v1/signup
 ```
 Ví dụ:
+![Alt text](img/signup.png)
 
 ### Đăng nhập, sử dụng phương thức POST
 ```url
 localhost:PORT/api/v1/login
 ```
 Ví dụ:
+![Alt text](img/login.png)
 
 ### Quên mật khẩu, sử dụng phương thức POST
 ```url
 localhost:PORT/api/v1/forgotPassword
 ```
 Ví dụ:
+![Alt text](img/forgotPassword.png)
+![Alt text](img/mail.png)
 
 ### Đặt lại mật khẩu, sử dụng phương thức PATCH
 ```url
 localhost:PORT/api/v1/resetPassword/:token
 ```
 Ví dụ:
+![Alt text](img/resetPassword.png)
+
+### Cập nhật mật khẩu, cần phải đăng nhập từ trước, sử dụng phương thức PATCH
+```url
+localhost:PORT/api/v1/updatePassword
+```
+Ví dụ:
+![Alt text](img/updatePassword.png)
 
 ## **Các API liên quan đến quiz**
 ### Lấy danh sách tất cả các quiz, sử dụng phương thức GET
