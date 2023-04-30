@@ -114,7 +114,7 @@ const getQuizQuestions = async (req, res) => {
         .status(404)
         .json({ message: `Quiz ${req.params.quizId} not found` });
     }
-    res.status(200).json(...quiz.questions);
+    res.status(200).json(JSON.parse(JSON.stringify([...quiz.questions])));
   } catch (err) {
     return console.log(err);
   }
@@ -131,7 +131,7 @@ const addQuizQuestion = async (req, res) => {
     quiz.questions.push(req.body);
     const savedQuiz = await quiz.save();
     const updatedQuiz = await Quizes.findById(savedQuiz._id);
-    res.status(200).json(updatedQuiz);
+    res.status(200).json(JSON.parse(JSON.stringify(updatedQuiz)));
   } catch (err) {
     console.log(err);
   }
