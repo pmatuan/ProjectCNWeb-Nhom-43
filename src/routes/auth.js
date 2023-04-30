@@ -1,23 +1,16 @@
-const router = require('express').Router();
-const asyncMiddleware = require('../middlewares/async');
-const { auth } = require('../middlewares/auth');
-const { loginValidate, registerValidate } = require('../validations/auth');
+const express = require('express');
 const authController = require('../controllers/auth');
 
-router.post(
-  '/auths/register',
-  registerValidate,
-  asyncMiddleware(authController.register),
-);
-router.post(
-  '/auths/login',
-  loginValidate,
-  asyncMiddleware(authController.login),
-);
-router.get(
-  '/auths/verify',
-  auth,
-  asyncMiddleware(authController.verifyAccessToken),
+const router = express.Router();
+
+router.post('/login', authController.login);
+router.post('/signup', authController.signup);
+router.post('/forgotPassword', authController.forgotPassword);
+router.patch('/resetPassword/:token', authController.resetPassword);
+router.patch(
+  '/updatePassword',
+  authController.protect,
+  authController.updatePassword,
 );
 
 module.exports = router;
