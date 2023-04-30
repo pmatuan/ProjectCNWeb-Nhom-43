@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { MONGO_URI } = require('../configs');
 
+mongoose.set('strictQuery', false);
+
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
 });
