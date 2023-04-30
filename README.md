@@ -6,11 +6,13 @@
 ```url
 localhost:PORT/api/v1/auths/register
 ```
+Ví dụ:
 
 ### Đăng nhập
 ```url
 localhost:PORT/api/v1/auths/login
 ```
+Ví dụ:
 
 ## **Các API liên quan đến quiz**
 ### Lấy danh sách tất cả các quiz, sử dụng phương thức GET
@@ -18,19 +20,14 @@ localhost:PORT/api/v1/auths/login
 localhost:PORT/api/v1/quizes
 ```
 Ví dụ:
+![Alt text](img/getQuizes.png)
 
 ### Tạo một quiz, sử dụng phương thức POST
 ```url
 localhost:PORT/api/v1/quizes
 ```
 Ví dụ:
-
-### Xóa tất cả các quiz, sử dụng phương thức DELETE
-```url
-localhost:PORT/api/v1/quizes
-```
-Ví dụ:
-
+![Alt text](img/createQuiz.png)
 ------------------------
 
 
@@ -39,7 +36,7 @@ Ví dụ:
 localhost:PORT/api/v1/quizes/:quizId
 ```
 Ví dụ:
-
+![Alt text](img/getQuizWithID.png)
 
 ### Cập nhật thông tin của quiz với ID là quizID như tên quiz, câu hỏi trong quiz, sử dụng phương thức PUT
 
@@ -47,13 +44,13 @@ Ví dụ:
 localhost:PORT/api/v1/quizes/:quizId
 ```
 Ví dụ:
-
+![Alt text](img/updateQuizWithID.png)
 ### Xóa quiz với ID là quizID, sử dụng phương thức DELETE
 ```url
 localhost:PORT/api/v1/quizes/:quizId
 ```
 Ví dụ:
-
+![Alt text](img/deleteQuizWithID.png)
 ---
 
 ### Lấy câu hỏi của quiz với ID là quizID, sử dụng phương thức GET
@@ -61,19 +58,20 @@ Ví dụ:
 localhost:PORT/api/v1/quizes/:quizId/questions
 ```
 Ví dụ:
+![Alt text](img/getQuestionQuiz.png)
 
 ### Thêm câu hỏi của quiz với ID là quizID, sử dụng phương thức POST
 ```url
 localhost:PORT/api/v1/quizes/:quizId/questions
 ```
 Ví dụ:
-
+![Alt text](img/addQuestionQuiz.png)
 ### Xóa toàn bộ câu hỏi của quiz với ID là quizID, sử dụng phương thức DELETE
 ```url
 localhost:PORT/api/v1/quizes/:quizId/questions
 ```
 Ví dụ:
-
+![Alt text](img/deleteAllQuestionQuiz.png)
 ---
 
 ### Lấy câu hỏi với ID là questionID của quiz của ID là quizID, sử dụng phương thức GET
@@ -81,15 +79,18 @@ Ví dụ:
 localhost:PORT/api/v1/quizes/:quizId/questions/:questionId
 ```
 Ví dụ:
+![Alt text](img/getQuestionByID.png)
 
 ### Cập nhật câu hỏi với ID là questionID của quiz của ID là quizID, sử dụng phương thức PUT
 ```url
 localhost:PORT/api/v1/quizes/:quizId/questions/:questionId
 ```
 Ví dụ:
+![Alt text](img/updateQuestionByID.png)
 
 ### Xóa câu hỏi với ID là questionID của quiz của ID là quizID, sử dụng phương thức DELETE
 ```url
 localhost:PORT/api/v1/quizes/:quizId/questions/:questionId
 ```
 Ví dụ:
+![Alt text](img/deleteQuestionByID.png)
