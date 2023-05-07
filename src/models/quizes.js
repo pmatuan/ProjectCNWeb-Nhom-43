@@ -1,11 +1,17 @@
 const mongoose = require('mongoose');
 
-const optionSchema = new mongoose.Schema({
-  option: {
-    type: String,
-    required: true,
+const optionSchema = new mongoose.Schema(
+  {
+    option: {
+      type: String,
+      required: true,
+    },
   },
-});
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
+);
 
 const questionSchema = new mongoose.Schema(
   {
@@ -33,6 +39,8 @@ const questionSchema = new mongoose.Schema(
   {
     collection: 'question',
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
 
@@ -50,15 +58,16 @@ const quizSchema = new mongoose.Schema(
     },
 
     questions: [questionSchema],
-
   },
   {
     collection: 'quizes',
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
 
 module.exports = {
   Quizes: mongoose.model('Quiz', quizSchema),
-  Questions: mongoose.model('Question', questionSchema)
+  Questions: mongoose.model('Question', questionSchema),
 };
