@@ -24,6 +24,7 @@ module.exports = {
     'func-names': 'off',
     'object-shorthand': 'off',
     'consistent-return': 'off',
+    'spaced-comment': 'off',
     'no-return-await': 'off',
     'prefer-destructuring': ['error', { object: true, array: false }],
     'no-unused-vars': ['error', { argsIgnorePattern: 'req|res|next|val' }],
