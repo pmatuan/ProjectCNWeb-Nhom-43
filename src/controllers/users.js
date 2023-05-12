@@ -1,5 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
+const AppError = require('../utils/appError');
 const User = require('../models/users');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
@@ -22,7 +23,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 exports.updateRole = catchAsync(async (req, res, next) => {
   const { userId, newRole } = req.body;
   const user = await User.findById(userId);
-  if (!user) return next(new Error(404, 'User not found'));
+  if (!user) return next(new AppError(404, 'User not found'));
 
   //Update
   user.role = newRole;

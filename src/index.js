@@ -10,7 +10,6 @@ const errorHandler = require('./controllers/errors');
 
 const camelCaseReq = require('./middlewares/camelCaseReq');
 const omitReq = require('./middlewares/omitReq');
-const snakeCaseRes = require('./middlewares/snakeCaseRes');
 
 require('dotenv').config();
 require('./models');
@@ -33,7 +32,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(camelCaseReq);
 app.use(omitReq);
-app.use(snakeCaseRes());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 require('./routes')(app);
