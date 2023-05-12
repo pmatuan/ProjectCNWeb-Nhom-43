@@ -18,6 +18,12 @@ router.patch(
   formController.closeForm,
 );
 
+router.get(
+  '/forms/:id/join',
+  authController.restrictTo('student'),
+  formController.joinForm,
+);
+
 router
   .route('/forms')
   .get(formController.getAllForms)
@@ -25,7 +31,7 @@ router
 
 router
   .route('/forms/:id')
-  .get(authController.restrictTo('student'), formController.joinForm)
+  .get(formController.getForm)
   .post(formController.isOwner, formController.deleteForm);
 
 module.exports = router;

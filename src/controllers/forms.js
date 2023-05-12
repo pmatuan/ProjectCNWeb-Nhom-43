@@ -48,6 +48,7 @@ exports.createForm = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getForm = catchAsync(async (req, res, next) => {});
 exports.deleteForm = catchAsync(async (req, res, next) => {});
 
 exports.openForm = catchAsync(async (req, res, next) => {
@@ -80,13 +81,17 @@ exports.closeForm = catchAsync(async (req, res, next) => {
 
 exports.joinForm = catchAsync(async (req, res, next) => {
   const form = await Form.findById(req.params.id);
-  if (!form) return next(AppError(404, 'Form not found'));
-  if (req.body.password !== form.password)
-    return next(AppError(403, 'Wrong password, please try again!'));
+
+  if (!form) return next(new AppError(404, 'Form not found'));
+  if (req.body.password !== form.password.toString())
+    return next(new AppError(403, 'Wrong password, please try again!'));
 
   const fullForm = await Form.findById(req.params.id)
-    .populate('quiz')
-    .select('-questions.rightAnswer');
+    .populate({
+      path: 'quiz',
+      select: '-questions.key -questions.explanation',
+    })
+    .select('-__v -password');
 
   res.status(200).json({
     status: 'success',
