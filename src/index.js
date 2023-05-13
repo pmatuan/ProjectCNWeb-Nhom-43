@@ -8,7 +8,6 @@ const httpLogger = require('http-logger');
 const AppError = require('./utils/appError');
 const errorHandler = require('./controllers/errors');
 
-const camelCaseReq = require('./middlewares/camelCaseReq');
 const omitReq = require('./middlewares/omitReq');
 
 require('dotenv').config();
@@ -30,7 +29,6 @@ app.use(compression());
 app.use(httpLogger());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(camelCaseReq);
 app.use(omitReq);
 app.use(express.static(path.join(__dirname, '..', 'public')));
 

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "prod": "SET NODE_ENV=production&&nodemon src/index.js"
   },
   "author": "",
   "license": "ISC",

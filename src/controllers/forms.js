@@ -5,6 +5,23 @@ const APIFeatures = require('../utils/apiFeatures');
 const { generateRandomString } = require('../utils/random');
 
 exports.gradeForm = catchAsync(async (req, res, next) => {
+  const form = await Form.findOne({
+    _id: req.params.id,
+    isEnabled: true,
+  }).populate('quiz');
+
+  if (!form) return next(new AppError(404, 'Form not found'));
+
+  const { questions } = form.quiz;
+  const studentAnswers = req.body;
+
+  let rightAnswer = 0;
+  questions.forEach((question) => {
+    const studentAnswer = studentAnswers[question.id];
+    if (studentAnswer === question.key) rightAnswer += 1;
+  });
+  req.grade = Math.round((rightAnswer / questions.length) * 100) / 10;
+
   next();
 });
 
