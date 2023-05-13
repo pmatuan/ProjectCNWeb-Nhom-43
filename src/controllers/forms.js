@@ -4,6 +4,10 @@ const Form = require('../models/forms');
 const APIFeatures = require('../utils/apiFeatures');
 const { generateRandomString } = require('../utils/random');
 
+exports.gradeForm = catchAsync(async (req, res, next) => {
+  next();
+});
+
 exports.isOwner = catchAsync(async (req, res, next) => {
   const form = await Form.findById(req.params.id);
   if (!form) return next(new AppError(404, 'Form not found'));
@@ -48,8 +52,27 @@ exports.createForm = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getForm = catchAsync(async (req, res, next) => {});
-exports.deleteForm = catchAsync(async (req, res, next) => {});
+exports.getForm = catchAsync(async (req, res, next) => {
+  const form = await Form.findById(req.params.id)
+    .populate('quiz')
+    .select('-__v ');
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      form,
+    },
+  });
+});
+
+exports.deleteForm = catchAsync(async (req, res, next) => {
+  const form = await Form.findByIdAndDelete(req.params.id);
+  if (!form) return next(new AppError(404, 'Form not found'));
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
 
 exports.openForm = catchAsync(async (req, res, next) => {
   const form = await Form.findByIdAndUpdate(
@@ -80,7 +103,7 @@ exports.closeForm = catchAsync(async (req, res, next) => {
 });
 
 exports.joinForm = catchAsync(async (req, res, next) => {
-  const form = await Form.findById(req.params.id);
+  const form = await Form.findOne({ _id: req.params.id, isEnabled: true });
 
   if (!form) return next(new AppError(404, 'Form not found'));
   if (req.body.password !== form.password.toString())
@@ -100,7 +123,3 @@ exports.joinForm = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-exports.guard = {}; //Chỉ làm 1 lần?
-
-exports.submitForm = catchAsync(async (req, res, next) => {}); //Chấm điểm, lưu lại

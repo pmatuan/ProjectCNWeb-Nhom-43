@@ -32,6 +32,6 @@ router
 router
   .route('/forms/:id')
   .get(formController.getForm)
-  .post(formController.isOwner, formController.deleteForm);
+  .delete(formController.isOwner, formController.deleteForm);
 
 module.exports = router;

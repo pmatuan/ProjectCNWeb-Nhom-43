@@ -6,7 +6,6 @@ const Quiz = require('../models/quizzes');
 exports.isOwner = catchAsync(async (req, res, next) => {
   const quiz = await Quiz.findById(req.body.quizId);
   if (!quiz) return next(new AppError(404, 'Quiz not found'));
-
   if (!quiz.owner.equals(req.user._id))
     return next(new AppError(403, "You don't have permission on this quiz"));
 
