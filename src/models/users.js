@@ -38,14 +38,24 @@ const userSchema = new mongoose.Schema(
         message: 'Passwords are not the same',
       },
     },
-    device: { type: String, required: true },
+    device: {
+      type: String,
+      required: true,
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
   },
   {
-    collection: 'user',
+    collection: 'users',
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
 
