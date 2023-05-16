@@ -22,12 +22,12 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 
 exports.updateRole = catchAsync(async (req, res, next) => {
   const { userId, newRole } = req.body;
-  const user = await User.findById(userId);
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { role: newRole },
+    { runValidators: true, new: true },
+  );
   if (!user) return next(new AppError(404, 'User not found'));
-
-  //Update
-  user.role = newRole;
-  await user.save({ validateBeforeSave: false });
 
   res.status(200).json({
     status: 'success',
