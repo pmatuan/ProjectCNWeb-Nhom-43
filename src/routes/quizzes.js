@@ -12,12 +12,21 @@ router
   .get(quizController.getAllQuizzes)
   .post(quizController.createQuiz);
 
-router.route('/quizzes/:id').get(quizController.getQuiz);
+router
+  .route('/quizzes/:id')
+  .get(quizController.getQuiz)
+  .put(quizController.updateQuiz)
+  .delete(quizController.deleteQuiz);
 
-router.route('/quizzes/:id/questions').post(quizController.addQuestion);
+router
+  .route('/quizzes/:id/questions')
+  .get(quizController.getAllQuestions)
+  .post(quizController.addQuestions)
+  .delete(quizController.deleteAllQuestions);
 
 router
   .route('/quizzes/:quizId/questions/:questionId')
+  .get(quizController.getQuestion)
   .put(quizController.editQuestion)
   .delete(quizController.deleteQuestion);
 
