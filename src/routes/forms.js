@@ -8,6 +8,18 @@ const router = express.Router();
 
 router.use(authController.protect);
 
+router
+  .route('/forms')
+  .get(formController.getAllForms)
+  .post(quizController.isOwner, formController.createForm);
+
+router
+  .route('/forms/:id')
+  .get(quizController.isOwner, formController.getForm)
+  .post(formController.gradeForm, attendancesController.addAttendance)
+  .put(formController.isOwner, formController.editForm)
+  .delete(formController.isOwner, formController.deleteForm);
+
 router.patch(
   '/forms/:id/open',
   formController.isOwner,
@@ -23,17 +35,6 @@ router.get(
   authController.restrictTo('student'),
   formController.joinForm,
 );
-
-router
-  .route('/forms')
-  .get(formController.getAllForms)
-  .post(quizController.isOwner, formController.createForm);
-
-router
-  .route('/forms/:id')
-  .get(quizController.isOwner, formController.getForm)
-  .post(formController.gradeForm, attendancesController.addAttendance)
-  .delete(formController.isOwner, formController.deleteForm);
 
 router.get(
   '/forms/:id/attendances',

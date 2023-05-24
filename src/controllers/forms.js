@@ -82,6 +82,21 @@ exports.getForm = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.editForm = catchAsync(async (req, res, next) => {
+  const { quizId, name, timeLimit } = req.body;
+  const form = await Form.findByIdAndUpdate(
+    req.params.id,
+    { quizId: quizId, name: name, timeLimit: timeLimit },
+    { new: true },
+  );
+  res.status(200).json({
+    status: 'success',
+    data: {
+      form,
+    },
+  });
+});
+
 exports.deleteForm = catchAsync(async (req, res, next) => {
   const form = await Form.findByIdAndDelete(req.params.id);
   if (!form) return next(new AppError(404, 'Form not found'));
