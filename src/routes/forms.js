@@ -15,7 +15,7 @@ router
 
 router
   .route('/forms/:id')
-  .get(quizController.isOwner, formController.getForm)
+  .get(formController.isOwner, formController.getForm)
   .post(formController.gradeForm, attendancesController.addAttendance)
   .put(formController.isOwner, formController.editForm)
   .delete(formController.isOwner, formController.deleteForm);
