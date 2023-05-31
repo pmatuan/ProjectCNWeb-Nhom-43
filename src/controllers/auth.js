@@ -61,15 +61,17 @@ exports.login = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
+exports.logout = (req, res) => {
+  res.clearCookie('jwt');
+  res.status(200).json({ status: 'success' });
+};
+
 // Use on all routes that require authentication
 exports.protect = catchAsync(async (req, res, next) => {
   // Getting token and check if it exists
   let token = '';
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer ')
-  ) {
-    token = req.headers.authorization.split(' ')[1];
+  if (req.headers.cookie && req.headers.cookie.startsWith('jwt')) {
+    token = req.headers.cookie.split('=')[1];
   }
   if (!token) {
     return next(

@@ -23,7 +23,12 @@ process.on('uncaughtException', (err) => {
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true, //included origin as true
+    credentials: true, //included credentials as true
+  }),
+);
 app.use(helmet());
 app.use(compression());
 app.use(httpLogger());
