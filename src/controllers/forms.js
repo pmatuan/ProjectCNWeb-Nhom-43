@@ -36,7 +36,10 @@ exports.isOwner = catchAsync(async (req, res, next) => {
 
 exports.getAllForms = catchAsync(async (req, res, next) => {
   const ownerId = req.user._id;
-  const features = new APIFeatures(Form.find({ owner: ownerId }), req.query)
+  const features = new APIFeatures(
+    Form.find({ owner: ownerId }).populate({ path: 'quiz', select: 'name' }),
+    req.query,
+  )
     .filter()
     .sort()
     .limitFields()
