@@ -13,7 +13,7 @@ const questionSchema = new mongoose.Schema(
       },
     ],
     key: {
-      type: Number,
+      type: String,
       required: true,
     },
     explanation: {
