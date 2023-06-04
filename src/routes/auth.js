@@ -3,6 +3,15 @@ const authController = require('../controllers/auth');
 
 const router = express.Router();
 
+router.get('/', authController.protect, (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: req.user,
+    },
+  });
+});
+
 router.post('/login', authController.login);
 router.post('/signup', authController.signup);
 router.delete('/logout', authController.logout);
