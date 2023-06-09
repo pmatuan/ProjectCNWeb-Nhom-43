@@ -5,7 +5,7 @@ const formSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      default: () => `Warm-up Test: ${new Date()}`,
+      default: () => `Kiểm tra ngày: ${new Date().toISOString().split('T')[0]}`,
       required: [true, 'A test must have a name'],
     },
     quiz: {

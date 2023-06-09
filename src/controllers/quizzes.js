@@ -20,11 +20,12 @@ exports.getAllQuizzes = catchAsync(async (req, res, next) => {
     .paginate();
 
   const quizzes = await features.query;
-
+  const count = await Quiz.countDocuments();
   res.status(200).json({
     status: 'success',
     results: quizzes.length,
     data: {
+      count,
       quizzes,
     },
   });
