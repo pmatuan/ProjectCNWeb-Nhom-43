@@ -45,10 +45,12 @@ exports.getAllForms = catchAsync(async (req, res, next) => {
     .limitFields()
     .paginate();
   const forms = await features.query;
+  const count = await Form.countDocuments();
   res.status(200).json({
     status: 'success',
     results: forms.length,
     data: {
+      count,
       forms,
     },
   });
@@ -64,10 +66,14 @@ exports.createForm = catchAsync(async (req, res, next) => {
     owner: req.user.id,
   });
 
+  const formData = await Form.findById(form._id)
+    .populate('quiz')
+    .select('-__v ');
+
   res.status(200).json({
     status: 'success',
     data: {
-      form,
+      form: formData,
     },
   });
 });
