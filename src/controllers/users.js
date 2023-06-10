@@ -10,10 +10,12 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
     .limitFields() // ?fields=name
     .paginate(); // ?page=3&limit=10
   const users = await features.query;
+  const count = await User.countDocuments();
   res.status(200).json({
     status: 'success',
     results: users.length,
     data: {
+      count,
       users,
     },
   });
