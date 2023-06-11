@@ -126,7 +126,7 @@ exports.openForm = catchAsync(async (req, res, next) => {
 exports.closeForm = catchAsync(async (req, res, next) => {
   const form = await Form.findByIdAndUpdate(
     req.params.id, //form-id
-    { isEnabled: false, password: generateRandomString(18, '0123456789') },
+    { isEnabled: false, password: generateRandomString(6, '0123456789') },
     { new: true },
   );
   res.status(200).json({
