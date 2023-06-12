@@ -97,12 +97,12 @@ exports.deleteQuiz = catchAsync(async (req, res, next) => {
 
 exports.getAllQuestions = catchAsync(async (req, res, next) => {
   const quiz = await Quiz.findOne({
-    _id: req.params.quizId,
+    _id: req.params.id,
     owner: req.user.id,
   });
 
   if (!quiz) {
-    next(new AppError(404, `Quiz ${req.params.quizId} not found`));
+    next(new AppError(404, `Quiz ${req.params.id} not found`));
   }
 
   res.status(200).json({
@@ -145,13 +145,13 @@ exports.addQuestions = catchAsync(async (req, res, next) => {
 
 exports.deleteAllQuestions = catchAsync(async (req, res, next) => {
   const quiz = await Quiz.findOneAndUpdate(
-    { _id: req.params.quizId, owner: req.user.id },
+    { _id: req.params.id, owner: req.user.id },
     { $set: { questions: [] } },
     { new: true },
   );
 
   if (!quiz) {
-    next(new AppError(404, `Quiz ${req.params.quizId} not found`));
+    return next(new AppError(404, `Quiz ${req.params.id} not found`));
   }
 
   res.status(200).json(quiz.questions);
