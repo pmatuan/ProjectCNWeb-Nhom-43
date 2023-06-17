@@ -1,6 +1,5 @@
 const Attendance = require('../models/attendances');
 const catchAsync = require('../utils/catchAsync');
-//const AppError = require('../utils/appError');
 
 exports.getAttendances = catchAsync(async (req, res, next) => {
   const attendances = await Attendance.find({ form: req.params.id }).populate({
@@ -21,7 +20,11 @@ exports.addAttendance = catchAsync(async (req, res, next) => {
     user: req.user._id,
     form: req.params.id,
     grade: req.grade,
-    device: req.params.device,
+    device: req.device,
+    location: {
+      latitude: req.location.latitude,
+      longitude: req.location.longitude,
+    },
   });
 
   res.status(201).json({

@@ -21,6 +21,8 @@ exports.gradeForm = catchAsync(async (req, res, next) => {
     if (studentAnswer === question.key) rightAnswer += 1;
   });
   req.grade = Math.round((rightAnswer / questions.length) * 100) / 10;
+  req.device = req.body.device
+  req.location = req.body.location
   next();
 });
 
