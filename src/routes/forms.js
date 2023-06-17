@@ -30,7 +30,7 @@ router.patch(
   formController.isOwner,
   formController.closeForm,
 );
-router.get(
+router.post(
   '/forms/:id/join',
   authController.restrictTo('student'),
   formController.joinForm,

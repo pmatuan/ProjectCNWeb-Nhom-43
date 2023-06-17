@@ -13,15 +13,16 @@ exports.gradeForm = catchAsync(async (req, res, next) => {
   if (!form) return next(new AppError(404, 'Form not found'));
 
   const { questions } = form.quiz;
-  const studentAnswers = req.body;
+  const studentAnswers = req.body.answers;
 
   let rightAnswer = 0;
   questions.forEach((question) => {
-    const studentAnswer = studentAnswers[question.id];
+    const studentAnswer = studentAnswers[question._id];
     if (studentAnswer === question.key) rightAnswer += 1;
   });
   req.grade = Math.round((rightAnswer / questions.length) * 100) / 10;
-
+  req.device = req.body.device
+  req.location = req.body.location
   next();
 });
 
