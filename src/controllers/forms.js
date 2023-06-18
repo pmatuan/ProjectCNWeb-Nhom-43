@@ -21,8 +21,8 @@ exports.gradeForm = catchAsync(async (req, res, next) => {
     if (studentAnswer === question.key) rightAnswer += 1;
   });
   req.grade = Math.round((rightAnswer / questions.length) * 100) / 10;
-  req.device = req.body.device
-  req.location = req.body.location
+  req.device = req.body.device;
+  req.location = req.body.location;
   next();
 });
 
@@ -46,7 +46,7 @@ exports.getAllForms = catchAsync(async (req, res, next) => {
     .limitFields()
     .paginate();
   const forms = await features.query;
-  const count = await Form.countDocuments();
+  const count = await Form.countDocuments({ owner: ownerId });
   res.status(200).json({
     status: 'success',
     results: forms.length,
