@@ -2,6 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const Quiz = require('../models/quizzes');
+const Form = require('../models/forms');
 
 exports.isOwner = catchAsync(async (req, res, next) => {
   const quiz = await Quiz.findById(req.body.quizId);
@@ -86,9 +87,8 @@ exports.deleteQuiz = catchAsync(async (req, res, next) => {
     _id: req.params.id,
     owner: req.user.id,
   });
-
   if (!quiz) return next(new AppError(404, 'Quiz not found'));
-
+  await Form.deleteMany({ quiz: req.params.id });
   res.status(204).json({
     status: 'success',
     data: null,
